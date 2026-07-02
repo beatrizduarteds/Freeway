@@ -1,8 +1,11 @@
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.lang.*;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
 
-class GamePanel extends JPanel
+class GamePanel extends JPanel implements Runnable
 {
   // COLORS
   // Background Colors
@@ -31,11 +34,15 @@ class GamePanel extends JPanel
   final int originalTileSize =16; // 16px by 16px minimum tile
   final int tileScale = 3; // to amplify the resolution on the new wider screens
   final int tileSize = originalTileSize * tileScale; // 48px scaling the tile size the will actually be shown
-  final int screenColumns = 23; // the last column must be hidden so the car appears gradually?
   final int screenRows = 12;
+  final int screenColumns = 23; // the last column must be hidden so the car appears gradually?
   final int screenWidth = screenColumns * tileSize; // 1104px
   final int screenHeight = screenRows * tileSize; // 576px
-
+  
+  
+  
+  Thread gameThread;
+  
   // constructor
   GamePanel()
   {  
@@ -44,5 +51,36 @@ class GamePanel extends JPanel
     this.setDoubleBuffered(true); // activate JPanel feature to better rendering performance
   }  
 
+  public void run() 
+  {
+    // Game Loop
+    while(gameThread != null)
+    {      
+      // System.out.println("The game is running!");
+      update(); // update the characters positions
+      repaint(); // print the current state
+    }
+  }
+  
+  
+  void startGameThread()
+  {  
+    gameThread = new Thread(this); // pass the GamePanel class to the constructor
+    gameThread.start();
+  }
+  
+  // update the 
+  public void update(){}
+  public void paintComponent(Graphics g)
+  {
+    super.paintComponent(g);
+    Graphics2D g2D = (Graphics2D)g; // cast graphics to 2D
+    
+    g2D.setColor(CHICKEN); // set color of chicken 1
+    g2D.fillRect(tileSize*6,screenHeight-tileSize,tileSize,tileSize/2); // draw opaque rectangle give coordinates x, y, and width and height
+    g2D.dispose(); // release any system resources that this graphics is using
+    
+  }
+  
 }
 
