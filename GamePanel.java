@@ -39,9 +39,18 @@ class GamePanel extends JPanel implements Runnable
   final int screenWidth = screenColumns * tileSize; // 1104px
   final int screenHeight = screenRows * tileSize; // 576px
   
+  Thread gameThread; // reference the thread for the game loop
+  KeyHandler keyHandler = new KeyHandler(); // create the object to listen and handle the players key inputs
+  
+  // set  game loop FPS
+  int FPS = 60;
+  
+  // Set player's default positions and speed
+  int playerX = tileSize*6;
+  int playerY = screenHeight-tileSize;
+  int playerSpeed = 4;
   
   
-  Thread gameThread;
   
   // constructor
   GamePanel()
@@ -49,16 +58,33 @@ class GamePanel extends JPanel implements Runnable
     this.setPreferredSize(new Dimension(screenWidth,screenHeight)); // set the dimensions calculated
     this.setBackground(ROAD); // set the background color to gray
     this.setDoubleBuffered(true); // activate JPanel feature to better rendering performance
+    this.addKeyListener(keyHandler); // add key listener to this panel
+    this.setFocusable(true); // set this panel to be focused to receive key inputs
   }  
 
   public void run() 
   {
+    // math to slow down game loop to the preferred FPS
+    double drawInterval = 1000000000/FPS;
+    double delta = 0;
+    long lastTime = System.nanoTime(); // returns the current value of running JVM's high-resolution time source, in nanoseconds (more precise)
+    // long currentTime2 = System.currentTimeMillis(); // returns the current value of running JVM's high-resolution time source, in milliseconds
+    long currentTime;
+      
     // Game Loop
     while(gameThread != null)
-    {      
-      // System.out.println("The game is running!");
-      update(); // update the characters positions
-      repaint(); // print the current state
+    {  
+      currentTime = System.nanoTime();
+      delta+=(currentTime-lastTime)/drawInterval;
+      lastTime=currentTime;
+      if(delta>=1){
+        //System.out.println(currentTime);
+        // System.out.println("The game is running!");
+        update(); // update the characters positions
+        repaint(); // print the current state
+        delta--;
+      }
+
     }
   }
   
@@ -69,15 +95,29 @@ class GamePanel extends JPanel implements Runnable
     gameThread.start();
   }
   
-  // update the 
-  public void update(){}
+  /* 
+      Update the position of the chickens
+        - X=0 and Y=0 in up the left corner
+        - X value increase to the right
+        - Y value increase going down
+  */
+  public void update(){
+    if(keyHandler.upPressed==true){
+      playerY-=playerSpeed;
+    }
+    else if(keyHandler.downPressed==true){
+      playerY+=playerSpeed;
+    }
+  }
+  
+  
   public void paintComponent(Graphics g)
   {
     super.paintComponent(g);
     Graphics2D g2D = (Graphics2D)g; // cast graphics to 2D
     
     g2D.setColor(CHICKEN); // set color of chicken 1
-    g2D.fillRect(tileSize*6,screenHeight-tileSize,tileSize,tileSize/2); // draw opaque rectangle give coordinates x, y, and width and height
+    g2D.fillRect(playerX,playerY,tileSize,tileSize/2); // draw opaque rectangle give coordinates x, y, and width and height
     g2D.dispose(); // release any system resources that this graphics is using
     
   }
