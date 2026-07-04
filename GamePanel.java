@@ -31,11 +31,9 @@ class GamePanel extends JPanel implements Runnable
   Color CHICKEN = new Color(252, 254, 79); // brighter yellow
 
   // SCREEN SIZES
-  final int originalTileSize =16; // 16px by 16px minimum tile
-  final int tileScale = 3; // to amplify the resolution on the new wider screens
-  final int tileSize = originalTileSize * tileScale; // 48px scaling the tile size the will actually be shown
-  final int screenRows = 12;
-  final int screenColumns = 23; // the last column must be hidden so the car appears gradually?
+  final int tileSize = 48; // 48px  width and 48px height screen grid
+  final int screenRows = 12; // each row has 48px of height
+  final int screenColumns = 23; // each column has 48px of width
   final int screenWidth = screenColumns * tileSize; // 1104px
   final int screenHeight = screenRows * tileSize; // 576px
   
