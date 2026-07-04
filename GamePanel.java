@@ -4,9 +4,23 @@ import java.awt.Dimension;
 import java.lang.*;
 import java.awt.Graphics2D;
 import java.awt.Graphics;
+import java.net.Socket;
 
 class GamePanel extends JPanel implements Runnable
 {
+  Socket skt; // reference player's socket
+  KeyHandler keyHandler = new KeyHandler(this.skt); // create the object to listen and handle this players key inputs
+  
+  Thread gameThread; // reference the thread for the game loop 
+  
+  int FPS = 60;// set  game loop FPS
+  
+  // Set player's default positions and speed
+  int playerX = tileSize*6;
+  int playerY = screenHeight-tileSize;
+  int playerSpeed = 4;
+  
+  
   // COLORS
   // Background Colors
   // Color name = new Color(int/float redValue, int/float greenValue, int/float blueValue);
@@ -31,31 +45,20 @@ class GamePanel extends JPanel implements Runnable
   Color CHICKEN = new Color(252, 254, 79); // brighter yellow
 
   // SCREEN SIZES
-  final int tileSize = 48; // 48px  width and 48px height screen grid
-  final int screenRows = 12; // each row has 48px of height
-  final int screenColumns = 23; // each column has 48px of width
-  final int screenWidth = screenColumns * tileSize; // 1104px
-  final int screenHeight = screenRows * tileSize; // 576px
+  static final int tileSize = 48; // 48px  width and 48px height screen grid
+  static final int screenRows = 12; // each row has 48px of height
+  static final int screenColumns = 23; // each column has 48px of width
+  static final int screenWidth = screenColumns * tileSize; // 1104px
+  static final int screenHeight = screenRows * tileSize; // 576px
   
-  Thread gameThread; // reference the thread for the game loop
-  KeyHandler keyHandler = new KeyHandler(); // create the object to listen and handle the players key inputs
-  
-  // set  game loop FPS
-  int FPS = 60;
-  
-  // Set player's default positions and speed
-  int playerX = tileSize*6;
-  int playerY = screenHeight-tileSize;
-  int playerSpeed = 4;
-  
-  
-  
+   
   // constructor
-  GamePanel()
+  GamePanel(Socket skt)
   {  
     this.setPreferredSize(new Dimension(screenWidth,screenHeight)); // set the dimensions calculated
     this.setBackground(ROAD); // set the background color to gray
     this.setDoubleBuffered(true); // activate JPanel feature to better rendering performance
+    this.skt = skt;
     this.addKeyListener(keyHandler); // add key listener to this panel
     this.setFocusable(true); // set this panel to be focused to receive key inputs
   }  

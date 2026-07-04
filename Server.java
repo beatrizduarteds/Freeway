@@ -1,17 +1,39 @@
 import javax.swing.JFrame;
-import java.io.FileOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.io.ObjectOutputStream;
 
 class Server
 {
 	public static void main(String args[]) throws Exception
 	{
-	
-	// Create the matrix that represents the pixels: 1104 width/columns, and 576 height/lines
-	
-	
-	
-	
+	  // Create a matrix object that represents the game state
+	  //Matrix test1 = new Matrix(25,50,3);
+    Matrix gameState = new Matrix(GamePanel.screenHeight,GamePanel.screenWidth);
+    
+    // Create a server socket to be available to connect with clients/players
+    ServerSocket ss = new ServerSocket(2500);
+       
+    // Reference an client socket;
+    Socket skt;
+    
+    // Create client count
+    int count = 1;
+    
+    // Conect with the client
+    skt = ss.accept();
+    System.out.println("Player "+count+++" just arrive!");
+    
+	  
+	  // Create an output stream and connect with the server output stream (it's 'skt' after connected)
+	  ObjectOutputStream oos = new ObjectOutputStream(skt.getOutputStream());
+	  
+	  // Write the matrix to this client (its in binary)
+	  oos.writeObject(gameState);
+	  
+	  // Close the output stream (object stream must be first)
+	  oos.close();
+	  
 	
 	
 	/*
@@ -32,24 +54,6 @@ class Server
 		gamePanel.startGameThread();
 	*/
 	
-	// Create a matrix object with the game state
-	//Matrix test1 = new Matrix(25,50,3);
-	GamePanel gamePanel = new GamePanel();
-  Matrix gameState = new Matrix(gamePanel.screenHeight,gamePanel.screenWidth);
-	
-	// Create an output stream to send the matrix object to a file
-	FileOutputStream fos = new FileOutputStream("gameStateMatrix.txt");
-	ObjectOutputStream oos = new ObjectOutputStream(fos);
-	
-	// Write the object on the file (it generates a binary file in this case)
-	oos.writeObject(gameState);
-	
-	// Create a socket to connect to 2 players
-	// Send the game state matrix to each player
-	
-	// Close the output stream (object stream must be first)
-	oos.close();
-	fos.close();
 	}
 }
 
