@@ -20,22 +20,22 @@ class Player
     
     // Create an input stream buffer and connect with this socket input stream
     BufferedInputStream bis = new BufferedInputStream(skt.getInputStream());
-    // Create an object input stream to read the Matrix object on the input stream buffer
+    // Create an object input stream to read the Matrix object there's inside the input stream buffer
     ObjectInputStream ois = new ObjectInputStream(bis);
     // Reference the object to be inputted
-    Matrix test2 = (Matrix)ois.readObject();
-    test2.printMatrix();
+    Matrix gameState = (Matrix)ois.readObject();
+    //gameState.printMatrix();
   
- /* 
     
-// Game Window
- JFrame window = new JFrame();
+    // Game Window
+    JFrame window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // to be able to close the window
 		window.setResizable(false); // so the window can not be resized
 		window.setTitle("Freeway"); // set a title to the window
 		
 		
 		GamePanel gamePanel = new GamePanel(skt); // create a panel
+		gamePanel.updateGameState(gameState);
 		window.add(gamePanel); // add the game panel to this window
 		window.pack(); // make the window to be sized to fit the panel
 		
@@ -46,15 +46,8 @@ class Player
 		gamePanel.startGameThread();
  
  
- 
- 
- 
- 
- 
- 
-  // Close the input stream (object stream must be first )
-  ois.close();
-  fis.close(); 
-  */
+    // Close the input stream (object stream must be first )
+    ois.close();
+    bis.close();
   }
 }

@@ -10,12 +10,14 @@ class GamePanel extends JPanel implements Runnable
 {
   Socket skt; // reference player's socket
   KeyHandler keyHandler = new KeyHandler(this.skt); // create the object to listen and handle this players key inputs
+  Matrix matrix;
   
   Thread gameThread; // reference the thread for the game loop 
   
   int FPS = 60;// set  game loop FPS
   
   // Set player's default positions and speed
+  
   int playerX = tileSize*6;
   int playerY = screenHeight-tileSize;
   int playerSpeed = 4;
@@ -61,6 +63,7 @@ class GamePanel extends JPanel implements Runnable
     this.skt = skt;
     this.addKeyListener(keyHandler); // add key listener to this panel
     this.setFocusable(true); // set this panel to be focused to receive key inputs
+    
   }  
 
   public void run() 
@@ -102,26 +105,55 @@ class GamePanel extends JPanel implements Runnable
         - X value increase to the right
         - Y value increase going down
   */
-  public void update(){
+  
+  void updateGameState(Matrix gameState)
+  {
+    this.matrix=gameState;
+  }
+  
+  public void update(){  
+  /*
     if(keyHandler.upPressed==true){
       playerY-=playerSpeed;
     }
     else if(keyHandler.downPressed==true){
-      playerY+=playerSpeed;
+      // send 2
+      //playerY+=playerSpeed;
     }
+  */
   }
   
   
   public void paintComponent(Graphics g)
   {
     super.paintComponent(g);
-    Graphics2D g2D = (Graphics2D)g; // cast graphics to 2D
+     // cast graphics to 2D
+    Graphics2D chicken1 = (Graphics2D)g;
+    //Graphics2D chicken2 = (Graphics2D)g; 
     
-    g2D.setColor(CHICKEN); // set color of chicken 1
-    g2D.fillRect(playerX,playerY,tileSize,tileSize/2); // draw opaque rectangle give coordinates x, y, and width and height
-    g2D.dispose(); // release any system resources that this graphics is using
+    // draw game based on this.matrix
+	  for(int i = 0; i < this.matrix.rowsNumber; i++)
+	  {
+	    for(int j = 0; j < this.matrix.columnsNumber; j++)
+	    {
+	       if(this.matrix.matrix[i][j]==1)
+	       {
+	        chicken1.setColor(CHICKEN); // set color of chicken 1
+          chicken1.fillRect(j,i,16,16); // draw opaque rectangle by the coordinates x, y, width and height
+	       }
+	        
+	    }
+	  }
+    chicken1.dispose(); // release any system resources that this graphics is using
+	}
     
-  }
-  
+    
+    
+
+    
+    
+    
+    
 }
+
 

@@ -18,8 +18,8 @@ public class KeyHandler implements KeyListener // interface for receiving keyboa
   
   @Override
   public void keyPressed(KeyEvent kp)
-  { 
-    /*
+  { /* 
+    
       Get the keyCode associated with this key event (what the user pressed):
         - static final int VK_W is the constant for the "W" key
         - static final int VK_S is the constant for the "S" key
@@ -27,8 +27,9 @@ public class KeyHandler implements KeyListener // interface for receiving keyboa
         - public static final int VK_KP_DOWN is the constant for the numeric keypad down arrow key
         - static final int VK_UP is the constant for the non-numpad up arrow key
         - public static final int VK_DOWN is the constant for the non-numpad down arrow key
-    */
+    
     int code = kp.getKeyCode();
+   
     try
     {
       // Create an output stream to send an int number to the server
@@ -37,9 +38,8 @@ public class KeyHandler implements KeyListener // interface for receiving keyboa
       dos.writeInt(code);
           
     }catch(Exception e){}
+   
     
-    
-    /* 
           
     if(code==KeyEvent.VK_W||code==KeyEvent.VK_KP_UP||code==KeyEvent.VK_UP){ // set when chicken move up
       upPressed = true;
@@ -53,6 +53,7 @@ public class KeyHandler implements KeyListener // interface for receiving keyboa
   @Override
   public void keyReleased(KeyEvent kr)
   {
+  /*
     // Get code of the released key
     int code = kr.getKeyCode();
       

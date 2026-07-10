@@ -8,7 +8,7 @@ import java.io.Serializable;
 */
 public class Matrix implements Serializable
 { 
-  // Matrix object attributes
+  // Attributes
   int rowsNumber;
 	int columnsNumber;
 	int cellValues;
@@ -30,6 +30,7 @@ public class Matrix implements Serializable
 	      this.matrix[i][j] = cellValues;
 	    }
 	  }
+	  this.matrix[528][columns/4] = 1;
 	}
 	
 	// Construct filling the matrix with the 'values' number
