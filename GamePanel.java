@@ -103,12 +103,14 @@ class GamePanel extends JPanel implements Runnable
         - Y value increase going down
   */
   public void update(){
+  /*
     if(keyHandler.upPressed==true){
       playerY-=playerSpeed;
     }
     else if(keyHandler.downPressed==true){
       playerY+=playerSpeed;
     }
+  */
   }
   
   

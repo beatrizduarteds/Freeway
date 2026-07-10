@@ -45,12 +45,7 @@ class Player
 		//test 
 		gamePanel.startGameThread();
  
- 
- 
- 
- 
- 
- 
+
  
   // Close the input stream (object stream must be first )
   ois.close();

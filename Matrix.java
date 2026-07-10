@@ -1,10 +1,13 @@
 import java.io.Serializable;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /* 
   Class to:
     - Create a matrix by it's width, rows, and values number (set the same to all cells).
     - Print the matrix.
     - Use its objects as a I/O Object Stream through Serializable interface.
+    - Update the matrix
 */
 public class Matrix implements Serializable
 { 
@@ -13,6 +16,7 @@ public class Matrix implements Serializable
 	int columnsNumber;
 	int cellValues;
 	int matrix[][];
+	public boolean upPressed, downPressed; // variables to store the chickens moves up/down
 	
 	Matrix(){}
 	
@@ -59,5 +63,37 @@ public class Matrix implements Serializable
 	    }
 	    System.out.println("");
 	  }
-	}	
+	}
+	
+	// Update the matrix
+	/*
+      Get the keyCode associated with this key event (what the user pressed):
+        - static final int VK_W is the constant for the "W" key
+        - static final int VK_S is the constant for the "S" key
+        - public static final int VK_KP_UP is the constant for the numeric keypad up arrow key
+        - public static final int VK_KP_DOWN is the constant for the numeric keypad down arrow key
+        - static final int VK_UP is the constant for the non-numpad up arrow key
+        - public static final int VK_DOWN is the constant for the non-numpad down arrow key
+    */
+	void updateMatrix(int code, int playerNumber)
+	{      
+    if(code==KeyEvent.VK_W||code==KeyEvent.VK_KP_UP||code==KeyEvent.VK_UP){ // set when chicken move up
+      upPressed = true;
+    }
+    
+    else if(code==KeyEvent.VK_S||code==KeyEvent.VK_KP_DOWN||code==KeyEvent.VK_DOWN){ // set when chicken move down
+      downPressed = true;
+    }
+    
+    else if(code==KeyEvent.VK_W||code==KeyEvent.VK_KP_UP||code==KeyEvent.VK_UP){ // reset after chicken move up
+      upPressed = false;
+    }
+    
+    else if(code==KeyEvent.VK_S||code==KeyEvent.VK_KP_DOWN||code==KeyEvent.VK_DOWN){ // reset after chicken move down
+      downPressed = false;
+    }
+    
+
+	}
+	
 }
